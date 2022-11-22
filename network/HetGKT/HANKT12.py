@@ -8,7 +8,7 @@ from config.KTArgs import KTArgs
 from data.Record import Record
 from .HANKT1 import HANKT1, get_sub_cgs
 from .han import MetaPath, HAN
-from ..DHKT.utils import get_logits_with_ec
+from ..utils import get_logits_with_ec
 
 
 class HANKT12(HANKT1):
@@ -31,7 +31,7 @@ class HANKT12(HANKT1):
         self.answer_cgs = {mp.str: metapath_reachable_graph(self.hg, mp) for mp in self.answer_metapaths}
 
     def forward(self, exercise: Tensor, label: Tensor, length: Tensor, student_id: Tensor = None
-                ) -> tuple[Tensor, dict]:
+    ) -> tuple[Tensor, dict]:
         """
         N: batch size
         L: sequence_size

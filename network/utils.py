@@ -14,3 +14,9 @@ def pad(seq: PackedSequence, seq_size: int) -> tuple[Tensor, Tensor]:
 
 def pack(seq: Tensor, lens: Tensor) -> PackedSequence:
     return pack_padded_sequence(seq, lens.cpu(), batch_first=True, enforce_sorted=False)
+
+def get_logits_with_ec(predictor, feats, length):
+    predict_input = torch.cat(feats, dim=-1)
+    logits = predictor(predict_input).squeeze(-1)
+    packed_logits = pack(logits, length).data
+    return packed_logits

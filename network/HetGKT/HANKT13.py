@@ -7,7 +7,7 @@ from config.HANArgs import HANArgs
 from config.KTArgs import KTArgs
 from .HANKT1 import HANKT1
 from .han import MetaPath, HAN
-from ..DHKT.utils import get_logits_with_ec
+from ..utils import get_logits_with_ec
 
 
 class HANKT13(HANKT1):
@@ -27,7 +27,7 @@ class HANKT13(HANKT1):
         self.concept_cgs = {mp.str: metapath_reachable_graph(self.hg, mp) for mp in self.concept_metapaths}
 
     def forward(self, exercise: Tensor, label: Tensor, length: Tensor, student_id: Tensor = None
-                ) -> tuple[Tensor, dict]:
+    ) -> tuple[Tensor, dict]:
         """
         N: batch size
         L: sequence_size
@@ -53,7 +53,7 @@ class HANKT13(HANKT1):
         return packed_logits, beta_dict
 
     def get_concept_feats(
-            self, feat_dict: dict[str, Tensor], beta_dict: dict[str, Tensor]
+        self, feat_dict: dict[str, Tensor], beta_dict: dict[str, Tensor]
     ) -> Tensor:
         concept_hg_dict, concept_hg_feat, concept_beta_dict = self.concept_han(self.concept_cgs, feat_dict)
         concept_feat_flatten = concept_hg_feat['c']  # F = han_num_heads * f

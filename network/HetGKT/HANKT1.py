@@ -8,8 +8,8 @@ from torch import nn, Tensor
 from config.HANArgs import HANArgs
 from config.KTArgs import KTArgs
 from .han import MetaPath, HAN
-from ..DHKT.utils import get_logits_with_ec
 from ..MyDKTBase import MyDKTBase
+from ..utils import get_logits_with_ec
 
 
 class HANKT1(MyDKTBase):
@@ -20,7 +20,7 @@ class HANKT1(MyDKTBase):
         if not hasattr(args, 'question_dim'):
             args.question_dim = han_out_dim * 2
         super().__init__(args.question_dim, args.hidden_dim, args.num_layers,
-                         args.exercise_count,
+            args.exercise_count,
                          args.seq_size)
         self.predictor = nn.Sequential(
             nn.Linear(args.hidden_dim + han_out_dim, args.hidden_dim * 3),
@@ -59,7 +59,7 @@ class HANKT1(MyDKTBase):
         self.node_dict = {k: torch.arange(v.shape[0]) for k, v in self.feat_dict.items()}
 
     def forward(self, exercise: Tensor, label: Tensor, length: Tensor, student_id: Tensor = None
-                ) -> tuple[Tensor, dict]:
+    ) -> tuple[Tensor, dict]:
         """
         N: batch size
         L: sequence_size
@@ -134,3 +134,5 @@ def get_sub_cgs(
             dgl.add_self_loop(cg)
         sub_cgs[mp.str] = cg
     return sub_cgs
+
+

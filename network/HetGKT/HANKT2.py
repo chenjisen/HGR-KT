@@ -9,8 +9,8 @@ from config.HANArgs import HANArgs
 from config.KTArgs import KTArgs
 from data.Record import Record
 from .han import MetaPath
-from ..DHKT.utils import get_logits_with_ec
 from ..MyDKTBase import MyDKTBase
+from ..utils import get_logits_with_ec
 
 
 class HANKT2(MyDKTBase):
@@ -19,7 +19,7 @@ class HANKT2(MyDKTBase):
     def __init__(self, args: Union[KTArgs, HANArgs]) -> None:
         han_out_dim = args.han_dim * args.han_num_heads[-1]
         super().__init__(han_out_dim, args.hidden_dim, args.num_layers,
-                         args.exercise_count,
+            args.exercise_count,
                          args.seq_size)
         self.predictor = nn.Sequential(
             nn.Linear(args.hidden_dim + han_out_dim, args.hidden_dim * 3),
@@ -45,7 +45,7 @@ class HANKT2(MyDKTBase):
         self.node_dict = {k: torch.arange(v.shape[0]) for k, v in self.feat_dict.items()}
 
     def forward(self, exercise: Tensor, combined_exercise: Tensor, length: Tensor, student_id: Tensor = None
-                ) -> tuple[Tensor, dict]:
+    ) -> tuple[Tensor, dict]:
         """
         N: batch size
         L: sequence_size
@@ -94,7 +94,7 @@ class HANKT2(MyDKTBase):
         return feat_dict, beta_dict
 
     def get_sub_cgs(self, exercise: Tensor,
-                    reduced_types: Iterable[str] = (),
+        reduced_types: Iterable[str] = (),
                     add_self_loop_types: Iterable[str] = ()) -> dict[str, DGLHeteroGraph]:
         exercise_flatten = exercise[exercise > 0].cpu()
         sub_cgs = {}

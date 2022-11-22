@@ -9,13 +9,12 @@ import pytorch_lightning as pl
 
 from config.HANArgs import HANArgs
 from config.KTArgs import KTArgs
-from config.SeewooArgs import SeewooArgs
 from config.parser import MyParser
 from data.data2 import KTDataModule2 as KTDataModule
 from get_model import get_model
 
 
-def train_model(args: Union[KTArgs, SeewooArgs, HANArgs]) -> dict[str, float]:
+def train_model(args: Union[KTArgs, HANArgs]) -> dict[str, float]:
     kt_dm = KTDataModule(args)
 
     callbacks = [
@@ -80,10 +79,7 @@ def train(**kwargs) -> dict[str, Union[float, str]]:
 
 
 def train_init():
-    with open('filtered-warnings') as f:
-        for s in f:
-            warnings.filterwarnings('ignore', s[:-1])
-    coloredlogs.install(level='DEBUG', fmt="%(asctime)s %(message)s")
+    coloredlogs.install(level='INFO', fmt="%(asctime)s %(message)s")
 
 
 def print_results(models, dataset_list, results):
